@@ -37,3 +37,19 @@ def calcularCoeficienteDePearson(covariancia:float,desvioPadraoX:float, desvioPa
 #TO-DO:colocar o coeficiente em porcentagem e com duas decimais
 def calcularCoeficienteDeDeterminacao(coeficienteDePearson: float) -> float:
     return coeficienteDePearson**2
+
+def calcularSomas(X: list[float], Y: list[float], num_elementos: int):
+    """Calcula as somas brutas"""
+    somaX = sum(X)
+    somaY = sum(Y)
+    somaXY = sum(X[i]*Y[i] for i in range(num_elementos))
+    somaX2 = sum(x**2 for x in X)
+    somaY2 = sum(y**2 for y in Y)
+    return somaX, somaY, somaXY, somaX2, somaY2
+
+def calcularRetaRegressao(mediaX: float, mediaY: float, covariancia: float, desvioPadraoX: float) -> tuple:
+    """Calcula a reta (Y = a + bX)"""
+    # A fórmula b = Cov(X,Y) / Variância(X) é equivalente à do Mínimos Quadrados!
+    b = covariancia / (desvioPadraoX**2)
+    a = mediaY - (b * mediaX)
+    return a, b
