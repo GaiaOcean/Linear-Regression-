@@ -15,12 +15,12 @@ class AppRegressaoLinear:
         frame_topo = tk.Frame(self.root, bg="#1e1e24")
         frame_topo.pack(pady=15, fill="x", padx=25)
 
-        tk.Label(frame_topo, text="Valores de X (Independente) - separados por espaço:", 
+        tk.Label(frame_topo, text="Valores de X - separados por espaço:", 
                  bg="#1e1e24", fg="white", font=("Arial", 11, "bold")).pack(anchor="w")
         self.ent_x = tk.Entry(frame_topo, font=("Courier", 14), bg="#cfd0d1")
         self.ent_x.pack(fill="x", ipady=8, pady=(0, 10))
 
-        tk.Label(frame_topo, text="Valores de Y (Dependente) - separados por espaço:", 
+        tk.Label(frame_topo, text="Valores de Y - separados por espaço:", 
                  bg="#1e1e24", fg="white", font=("Arial", 11, "bold")).pack(anchor="w")
         self.ent_y = tk.Entry(frame_topo, font=("Courier", 14), bg="#cfd0d1")
         self.ent_y.pack(fill="x", ipady=8)
@@ -69,7 +69,7 @@ class AppRegressaoLinear:
             r2 = methods.calcularCoeficienteDeDeterminacao(r)
 
             somaX, somaY, somaXY, somaX2, somaY2 = methods.calcularSomas(x, y, n)
-            a, b = methods.calcularRetaRegressao(mediaX, mediaY, cov, desvioX)
+            a, b = methods.calcularRetaRegressao(x,y,n)
 
             r2_pct = r2 * 100
 
@@ -85,6 +85,7 @@ class AppRegressaoLinear:
             rel += f"μx: {mediaX:.4f}\n"
             rel += f"μy: {mediaY:.4f}\n"
             rel += f"μxy: {mediaXY:.4f}\n"
+            rel += f"Cov(X,Y): {cov:.8f}\n"
             rel += f"r: {r:.8f}\n"
             rel += f"r²: {r2_pct:.2f}%\n\n"
             rel += f"a: {a:.6f}\n"
