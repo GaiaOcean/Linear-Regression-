@@ -7,15 +7,12 @@ def calcularMediaAritmetica(variavel: list[int], num_elementos: int) -> float:
     somatorio = 0
     for i in range(num_elementos):
         somatorio += variavel[i]
-    
     return somatorio/num_elementos
-
 
 def calcularMediaDoProduto(X:list[int], Y:list[int],num_elementos) -> float:  
     resultado = 0  
     for i in range(num_elementos):
         resultado += X[i]*Y[i]
-    
     return resultado/num_elementos
 
 def calcularCovariancia(mediaX:float, mediaY:float, mediaDoProduto:float) -> float:
