@@ -129,7 +129,7 @@ class AppRegressaoLinear:
             
             x_line = [min(indep), max(indep)]
             y_line = [a + b * val for val in x_line]
-            plt.plot(x_line, y_line, color='red', label=f'y = {a:.2f} + {b:.2f}x (R² = {r2:.4f})')
+            plt.plot(x_line, y_line, color='red', label=f'y = {a:.6f} + {b:.6f}x (R² = {r2:.6f})')
             
             plt.title('Regressão Linear')
             plt.xlabel(f'{nomeX}  (X)')
