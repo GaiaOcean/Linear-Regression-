@@ -69,6 +69,9 @@ class AppRegressaoLinear:
             nomeX = self.nome_indep.get().strip() or "X"
             nomeY = self.nome_dep.get().strip() or "Y"
 
+            aliasX = nomeX[0]
+            aliasY = nomeY[0]
+
             indep = self.analisar_entrada(self.ent_indep.get())
             dep = self.analisar_entrada(self.ent_dep.get())
 
@@ -101,25 +104,28 @@ class AppRegressaoLinear:
 
             rel += f"n: {n}\n"
 
-            rel += f"Σ{nomeX} [soma de {nomeX}]: {somaX:.4f}\n"
-            rel += f"Σ{nomeY} [soma de {nomeY}]: {somaY:.4f}\n"
-            rel += f"Σ{nomeX}{nomeY} [soma de {nomeX}x{nomeY}]: {somaXY:.4f}\n"
-            rel += f"Σ{nomeX}² [soma de {nomeX}²]: {somaX2:.4f}\n"
-            rel += f"Σ{nomeY}² [soma de {nomeY}²]: {somaY2:.4f}\n\n"
+            rel += f"Somatório da {nomeX}(Σ{aliasX}): {somaX:.4f}\n"
+            rel += f"Somatório da {nomeY}(Σ{aliasY}): {somaY:.4f}\n"
+            rel += f"Somatório do produto(Σ({aliasX} . {aliasY}))): {somaXY:.4f}\n"
+            rel += f"Somatório das {nomeX} ao quadrado(Σ{aliasX}²): {somaX2:.4f}\n"
+            rel += f"Somatório das {nomeY} ao quadrado (Σ{aliasY}²): {somaY2:.4f}\n\n"
 
-            rel += f"σ({nomeX}) [desvio padrão de {nomeX}]: {desvioX:.8f}\n"
-            rel += f"σ({nomeY}) [desvio padrão de {nomeY}]: {desvioY:.8f}\n\n"
+            rel += f"Desvio padrão da {nomeX} (σ({aliasX})): {desvioX:.8f}\n"
+            rel += f"Desvio padrão da {nomeY}(σ({aliasY})): {desvioY:.8f}\n\n"
 
-            rel += f"μ({nomeX}) [média de {nomeX}]: {mediaX:.4f}\n"
-            rel += f"μ({nomeY}) [média de {nomeY}]: {mediaY:.4f}\n"
-            rel += f"μ({nomeX}{nomeY}) [média de {nomeX}x{nomeY}]: {mediaXY:.4f}\n\n"
+            rel += f"Média de {nomeX}(μ({aliasX}))): {mediaX:.4f}\n"
+            rel += f"Média de {nomeY} (μ({aliasY})): {mediaY:.4f}\n"
+            rel += f"média do produto(μ({aliasX} . {aliasY})): {mediaXY:.4f}\n\n"
 
             rel += f"r [coeficiente de Pearson]: {r:.8f}\n"
             rel += f"r² [coeficiente de determinação]: {r2_pct:.2f}%\n\n"
 
             rel += f"a: {a:.6f}\n"
             rel += f"b: {b:.6f}\n"
-            rel += f"Equação: {nomeY} = {a:.6f} + {b:.6f}{nomeX}\n"
+            if b > 0:
+                rel += f"Equação: {nomeY} = {a:.6f} + {b:.6f} . {nomeX}\n"
+            else:
+                rel += f"Equação: {nomeY} = {a:.6f} - {b:.6f} . {nomeX}\n"
 
             self.visor.delete(1.0, tk.END)
             self.visor.insert(tk.END, rel)
@@ -129,7 +135,7 @@ class AppRegressaoLinear:
             
             x_line = [min(indep), max(indep)]
             y_line = [a + b * val for val in x_line]
-            plt.plot(x_line, y_line, color='red', label=f'y = {a:.6f} + {b:.6f}x (R² = {r2:.6f})')
+            plt.plot(x_line, y_line, color='red', label=f'y = {a:.6f} + {b:.6f}x (R² = {r2:.4f})')
             
             plt.title('Regressão Linear')
             plt.xlabel(f'{nomeX}  (X)')
