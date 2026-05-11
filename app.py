@@ -35,7 +35,6 @@ class AppRegressaoLinear:
         self.ent_dep = tk.Entry(frame_topo, font=("Courier", 14), bg="#cfd0d1")
         self.ent_dep.pack(fill="x", ipady=8, pady=(0,10))
 
-
         tk.Button(self.root, text="CALCULAR REGRESSÃO E GERAR GRÁFICO", bg="#5cb85c", fg="white", 
                   font=("Arial", 12, "bold"), command=self.executar, height=2).pack(fill="x", padx=25, pady=15)
 
@@ -80,45 +79,45 @@ class AppRegressaoLinear:
 
             n = methods.getNumDuplas(indep)
             
-            mediaX = methods.calcularMediaAritmetica(indep, n)
-            mediaY = methods.calcularMediaAritmetica(dep, n)
-            mediaXY = methods.calcularMediaDoProduto(indep, dep, n)
+            media_variavel_x = methods.calcularMediaAritmetica(indep, n)
+            media_variavel_y = methods.calcularMediaAritmetica(dep, n)
+            media_produto_xy = methods.calcularMediaDoProduto(indep, dep, n)
             
-            cov = methods.calcularCovariancia(mediaX, mediaY, mediaXY)
+            cov = methods.calcularCovariancia(media_variavel_x, media_variavel_y, media_produto_xy)
             
-            mediaQuadX = methods.calcularMediaDosQuadrados(indep, n)
-            mediaQuadY = methods.calcularMediaDosQuadrados(dep, n)
+            media_quadrados_x = methods.calcularMediaDosQuadrados(indep, n)
+            media_quadrados_y = methods.calcularMediaDosQuadrados(dep, n)
             
-            desvioX = methods.calcularDesvioPadrao(mediaQuadX, mediaX)
-            desvioY = methods.calcularDesvioPadrao(mediaQuadY, mediaY)
+            desvio_padrao_x = methods.calcularDesvioPadrao(media_quadrados_x, media_variavel_x)
+            desvio_padrao_y = methods.calcularDesvioPadrao(media_quadrados_y, media_variavel_y)
             
-            r = methods.calcularCoeficienteDePearson(cov, desvioX, desvioY)
-            r2 = methods.calcularCoeficienteDeDeterminacao(r)
+            coeficiente_pearson = methods.calcularCoeficienteDePearson(cov, desvio_padrao_x, desvio_padrao_y)
+            coeficiente_determinacao = methods.calcularCoeficienteDeDeterminacao(coeficiente_pearson)
 
-            somaX, somaY, somaXY, somaX2, somaY2 = methods.calcularSomas(indep, dep, n)
+            soma_variavel_x, soma_variavel_y, soma_produto_xy, soma_quadrados_x, soma_quadrados_y = methods.calcularSomas(indep, dep, n)
             a, b = methods.calcularRetaRegressao(indep, dep, n)
 
-            r2_pct = r2 * 100
+            porcentagem_determinacao = coeficiente_determinacao * 100
 
-            rel = f"RELATÓRIO DE REGRESSÃO LINEAR\n\n"
+            rel = f"Análise de Regressão Linear\n\n"
 
-            rel += f"n: {n}\n"
+            rel += f"Quantidade de pares: {n}\n"
 
-            rel += f"Somatório da {nomeX}(Σ{aliasX}): {somaX:.4f}\n"
-            rel += f"Somatório da {nomeY}(Σ{aliasY}): {somaY:.4f}\n"
-            rel += f"Somatório do produto(Σ({aliasX} . {aliasY}))): {somaXY:.4f}\n"
-            rel += f"Somatório das {nomeX} ao quadrado(Σ{aliasX}²): {somaX2:.4f}\n"
-            rel += f"Somatório das {nomeY} ao quadrado (Σ{aliasY}²): {somaY2:.4f}\n\n"
+            rel += f"Somatório da {nomeX}(Σ{aliasX}): {soma_variavel_x:.4f}\n"
+            rel += f"Somatório da {nomeY}(Σ{aliasY}): {soma_variavel_y:.4f}\n"
+            rel += f"Somatório do produto(Σ({aliasX} . {aliasY})): {soma_produto_xy:.4f}\n"
+            rel += f"Somatório das {nomeX} ao quadrado(Σ{aliasX}²): {soma_quadrados_x:.4f}\n"
+            rel += f"Somatório das {nomeY} ao quadrado (Σ{aliasY}²): {soma_quadrados_y:.4f}\n\n"
 
-            rel += f"Desvio padrão da {nomeX} (σ({aliasX})): {desvioX:.8f}\n"
-            rel += f"Desvio padrão da {nomeY}(σ({aliasY})): {desvioY:.8f}\n\n"
+            rel += f"Desvio padrão da {nomeX} (σ({aliasX})): {desvio_padrao_x:.8f}\n"
+            rel += f"Desvio padrão da {nomeY}(σ({aliasY})): {desvio_padrao_y:.8f}\n\n"
 
-            rel += f"Média de {nomeX}(μ({aliasX}))): {mediaX:.4f}\n"
-            rel += f"Média de {nomeY} (μ({aliasY})): {mediaY:.4f}\n"
-            rel += f"média do produto(μ({aliasX} . {aliasY})): {mediaXY:.4f}\n\n"
+            rel += f"Média de {nomeX}(μ({aliasX})): {media_variavel_x:.4f}\n"
+            rel += f"Média de {nomeY} (μ({aliasY})): {media_variavel_y:.4f}\n"
+            rel += f"Média do produto(μ({aliasX} . {aliasY})): {media_produto_xy:.4f}\n\n"
 
-            rel += f"r [coeficiente de Pearson]: {r:.8f}\n"
-            rel += f"r² [coeficiente de determinação]: {r2_pct:.2f}%\n\n"
+            rel += f"r [Coeficiente de Pearson]: {coeficiente_pearson:.8f}\n"
+            rel += f"r² [Coeficiente de determinação]: {porcentagem_determinacao:.2f}%\n\n"
 
             rel += f"a: {a:.6f}\n"
             rel += f"b: {b:.6f}\n"
@@ -135,7 +134,7 @@ class AppRegressaoLinear:
             
             x_line = [min(indep), max(indep)]
             y_line = [a + b * val for val in x_line]
-            plt.plot(x_line, y_line, color='red', label=f'y = {a:.6f} + {b:.6f}x (R² = {r2:.4f})')
+            plt.plot(x_line, y_line, color='red', label=f'y = {a:.6f} + {b:.6f}x (R² = {porcentagem_determinacao:.2f}%)')
             
             plt.title('Regressão Linear')
             plt.xlabel(f'{nomeX}  (X)')
@@ -143,6 +142,10 @@ class AppRegressaoLinear:
             plt.legend()
             plt.grid(True, linestyle='--', alpha=0.6)
             plt.show()
+
+            valor_x = float(input(f"Digite um valor de {nomeX}: "))
+            valor_estimado = a + b * valor_x
+            print(f"{nomeY} estimado: {valor_estimado:.4f}")
 
         except Exception as e:
             messagebox.showerror("Erro", str(e))
